@@ -13,7 +13,7 @@ import WechatPay from '../wepay';
 import WechatJssdk from '../jssdk';
 import WechatQrcode from '../qrcode';
 
-import config from './config.zdili';
+import config from './config';
 
 const MQTT_TOPIC_PREFIX = '/broker/pay/server/';
 
