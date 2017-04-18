@@ -4,19 +4,31 @@ co-wechat [![NPM version](https://badge.fury.io/js/co-wechat.png)](http://badge.
 微信公众平台消息接口服务中间件与API SDK
 
 ## 功能列表
-- 自动回复（文本、图片、语音、视频、音乐、图文）
-- 会话支持（创新功能）
++ 微信用户消息和事件推送处理功能（即接受URL转发的消息），开发者可在 开发->基本设置->修改配置->URL(服务器地址) 设置。
+  - 对应于wechat.js
+  - 自动回复（文本、图片、语音、视频、音乐、图文）
+  - 会话支持（创新功能）
++ 微信支付API支持
+  - 对应wepay.js
+  - 普通商户
+  - 服务商商户及特约商户
++ 微信公众号API支持
+  - oauth.js 支持oauth2网页认证
+  - jssdk.js 支持jssdk开发
+  - user.js 用户管理接口
+  - qrcode.js 获取永久及临时二维码
+  - template.js 模板消息支持
 
 ## Installation
 
 ```sh
-$ npm install co-wechat
+$ npm install koa3-wechat
 ```
 
 ## Use with koa
 
 ```js
-var wechat = require('co-wechat');
+var wechat = require('koa3-wechat');
 
 app.use(wechat('some token').middleware(function *() {
   // 微信输入信息都在this.weixin上
@@ -133,28 +145,6 @@ this.body = {
 };
 ```
 
-### WXSession支持
-由于公共平台应用的客户端实际上是微信，所以采用传统的Cookie来实现会话并不现实，为此中间件模块在openid的基础上添加了Session支持。一旦服务端启用了`koa-generic-session`中间件，在业务中就可以访问`this.wxsession`属性。这个属性与`this.session`行为类似。
-
-```js
-var session = require('koa-generic-session');
-app.use(session());
-app.use(wechat('some token').middleware(function *() {
-  var info = this.weixin;
-  if (info.Content === '=') {
-    var exp = this.wxsession.text.join('');
-    this.wxsession.text = '';
-    this.body = exp;
-  } else {
-    this.wxsession.text = this.wxsession.text || [];
-    this.wxsession.text.push(info.Content);
-    this.body = '收到' + info.Content;
-  }
-}));
-```
-
-`this.wxsession`与`this.session`采用相同的存储引擎，这意味着如果采用redis作为存储，这样`wxsession`可以实现跨进程共享。
-
 ## Show cases
 ### Node.js API自动回复
 
@@ -170,27 +160,11 @@ app.use(wechat('some token').middleware(function *() {
 原始API文档请参见：[消息接口指南](http://mp.weixin.qq.com/wiki/index.php?title=消息接口指南)。
 
 ## 交流群
-QQ群：157964097，使用疑问，开发，贡献代码请加群。
 
 ## 捐赠
-如果您觉得Wechat对您有帮助，欢迎请作者一杯咖啡
-
-![捐赠wechat](https://cloud.githubusercontent.com/assets/327019/2941591/2b9e5e58-d9a7-11e3-9e80-c25aba0a48a1.png)
-
-或者[![](http://img.shields.io/gratipay/JacksonTian.svg)](https://www.gittip.com/JacksonTian/)
 
 ## License
 The MIT license.
 
 ## Contributors
 
-```
- project  : co-wechat
- repo age : 4 months
- active   : 9 days
- commits  : 19
- files    : 11
- authors  :
-    13  Jackson Tian  68.4%
-     6  ifeiteng      31.6%
-```

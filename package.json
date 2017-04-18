@@ -1,11 +1,11 @@
 {
   "name": "koa3-wechat",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "wechat api for koa, made by Jackson Tian, modified by windsome.feng",
   "main": "index.js",
   "scripts": {
     "build": "npm run build:lib",
-    "build:lib": "babel src --out-dir lib",
+    "build:lib": "babel src --out-dir .",
     "test": "make test-all"
   },
   "repository": {
@@ -40,10 +40,13 @@
     "istanbul-harmony": "^0.3.16",
     "koa": "^0.13.0",
     "koa-generic-session": "^1.11.5",
+    "md5": "^2.2.1",
     "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "muk": "^0.5.3",
+    "redis": "^2.7.1",
     "rewire": "^2.5.2",
+    "sha1": "^1.1.1",
     "should": "~3.0.0",
     "supertest": "^3.0.0",
     "travis-cov": "^0.2.5"
