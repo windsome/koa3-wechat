@@ -246,7 +246,8 @@ export default class Wepay {
             debug ("pay success!");
         } else {
             debug ("error! pay fail!");
-            throw new Error ('pay fail! ' + data.return_msg);
+            var errmsg = data.err_code_des || data.err_code || data.result_code || data.return_msg;
+            throw new Error ('pay fail! ' + errmsg);
         }
         return data;
     }

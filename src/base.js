@@ -1,5 +1,6 @@
 import _debug from 'debug'
 const debug = _debug('app:server:wechat:base')
+import _ from 'lodash';
 
 import redis from 'redis';
 const redisClient = redis.createClient();
@@ -96,7 +97,19 @@ export default class Base {
     _request (url, opts = {}) {
         debug ("_request", url, opts);
         return fetch(url, opts)
-            .then (data => data.json())
+            .then (data => {
+                var contentType = data.headers.get('content-type');
+                debug ("parse response, contentType="+contentType);
+                if (_.startsWith(contentType, 'image/')) {
+                    return { errcode: 1, xContentType: contentType, xOrigData: data }
+                } else {
+                    return data.json()
+                        .catch (error => {
+                            debug ("error! data.json() fail!", error);
+                            return { errcode: 2, xOrigData: data }
+                        });
+                }
+            })
             .then (retobj => {
                 if (retobj){
                     debug ("_request fetch return:", retobj);
@@ -110,7 +123,7 @@ export default class Base {
                 }
             })
             .catch (error => {
-                debug ("error! fetch fail!", error);
+                debug ("error!", error);
                 return { errcode:-2, message: error.message };
             })
     }
