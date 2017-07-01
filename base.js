@@ -32,6 +32,10 @@ var _debug2 = require('debug');
 
 var _debug3 = _interopRequireDefault(_debug2);
 
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _redis = require('redis');
 
 var _redis2 = _interopRequireDefault(_redis);
@@ -146,7 +150,16 @@ var Base = function () {
 
             debug("_request", url, opts);
             return fetch(url, opts).then(function (data) {
-                return data.json();
+                var contentType = data.headers.get('content-type');
+                debug("parse response, contentType=" + contentType);
+                if (_lodash2.default.startsWith(contentType, 'image/')) {
+                    return { errcode: 1, xContentType: contentType, xOrigData: data };
+                } else {
+                    return data.json().catch(function (error) {
+                        debug("error! data.json() fail!", error);
+                        return { errcode: 2, xOrigData: data };
+                    });
+                }
             }).then(function (retobj) {
                 if (retobj) {
                     debug("_request fetch return:", retobj);
@@ -159,7 +172,7 @@ var Base = function () {
                     throw new Error("response nothing! should not happen!");
                 }
             }).catch(function (error) {
-                debug("error! fetch fail!", error);
+                debug("error!", error);
                 return { errcode: -2, message: error.message };
             });
         }

@@ -501,7 +501,7 @@ var Wepay = function () {
             var _ref10 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee10(url, params) {
                 var required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
                 var useCert = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-                var defaults, key, missing, requestFn, xml, data;
+                var defaults, key, missing, requestFn, xml, data, errmsg;
                 return _regenerator2.default.wrap(function _callee10$(_context10) {
                     while (1) {
                         switch (_context10.prev = _context10.next) {
@@ -583,17 +583,18 @@ var Wepay = function () {
                                 }
 
                                 debug("pay success!");
-                                _context10.next = 34;
+                                _context10.next = 35;
                                 break;
 
                             case 32:
                                 debug("error! pay fail!");
-                                throw new Error('pay fail! ' + data.return_msg);
-
-                            case 34:
-                                return _context10.abrupt('return', data);
+                                errmsg = data.err_code_des || data.err_code || data.result_code || data.return_msg;
+                                throw new Error('pay fail! ' + errmsg);
 
                             case 35:
+                                return _context10.abrupt('return', data);
+
+                            case 36:
                             case 'end':
                                 return _context10.stop();
                         }
