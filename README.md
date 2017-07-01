@@ -158,8 +158,10 @@ ctx.body = {
 原始API文档请参见：[消息接口指南](http://mp.weixin.qq.com/wiki/index.php?title=消息接口指南)。
 
 ## 交流群
+微信开发QQ群： 573207886
 
 ## 捐赠
+![捐赠](219668615.jpg)
 
 ## License
 The MIT license.
