@@ -1,6 +1,6 @@
 {
   "name": "koa3-wechat",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "wechat api for koa, made by Jackson Tian, modified by windsome.feng",
   "main": "index.js",
   "scripts": {

@@ -7,7 +7,6 @@ var wepay = require('./wepay');
 var template = require('./template');
 var media = require('./media');
 var menu = require('./menu');
-var message= require('./message');
 
 module.exports = {
     wechat,
@@ -18,6 +17,5 @@ module.exports = {
     wepay,
     template,
     media,
-    menu,
-    message
+    menu
 };
