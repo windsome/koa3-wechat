@@ -8,42 +8,42 @@ var tail = require('./support').tail;
 var wechat = require('../');
 var app = require('koa')();
 
-app.use(wechat('some token').middleware(function *() {
-  // 微信输入信息都在this.weixin上
-  var info = this.weixin;
+app.use(wechat('some token').middleware(async (ctx, next) => {
+  // 微信输入信息都在ctx.weixin上
+  var info = ctx.weixin;
   // 回复屌丝(普通回复)
   if (info.FromUserName === 'diaosi') {
-    this.body = 'hehe';
+    ctx.body = 'hehe';
   } else if (info.FromUserName === 'test') {
-    this.body = {
+    ctx.body = {
       content: 'text object',
       type: 'text'
     };
   } else if (info.FromUserName === 'hehe') {
-    this.body = {
+    ctx.body = {
       title: "来段音乐吧<",
       description: "一无所有>",
       musicUrl: "http://mp3.com/xx.mp3?a=b&c=d",
       hqMusicUrl: "http://mp3.com/xx.mp3?foo=bar"
     };
   } else if (info.FromUserName === 'cs') {
-    this.body = {
+    ctx.body = {
       type: 'customerService'
     };
   } else if (info.FromUserName === 'kf') {
-    this.body = {
+    ctx.body = {
       type: 'customerService',
       kfAccount: 'test1@test'
     };
   } else if (info.FromUserName === 'ls') {
-    this.body = info.SendLocationInfo.EventKey;
+    ctx.body = info.SendLocationInfo.EventKey;
   } else if (info.FromUserName === 'pic_weixin') {
-    this.body = info.SendPicsInfo.EventKey;
+    ctx.body = info.SendPicsInfo.EventKey;
   } else if (info.FromUserName === 'web') {
-    this.body = 'web message ok';
+    ctx.body = 'web message ok';
   } else {
     // 回复高富帅(图文回复)
-    this.body = [
+    ctx.body = [
       {
         title: '你来我家接我吧',
         description: '这是女神与高富帅之间的对话',

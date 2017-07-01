@@ -1,4 +1,4 @@
-co-wechat [![NPM version](https://badge.fury.io/js/co-wechat.png)](http://badge.fury.io/js/co-wechat) [![Build Status](https://travis-ci.org/node-webot/co-wechat.png?branch=master)](https://travis-ci.org/node-webot/co-wechat) [![Dependencies Status](https://david-dm.org/node-webot/co-wechat.png)](https://david-dm.org/node-webot/co-wechat) [![Coverage Status](https://coveralls.io/repos/node-webot/co-wechat/badge.png)](https://coveralls.io/r/node-webot/co-wechat)
+koa3-wechat [![NPM version](https://badge.fury.io/js/koa3-wechat.png)](http://badge.fury.io/js/koa3-wechat) [![Build Status](https://travis-ci.org/windsome/koa3-wechat.png?branch=master)](https://travis-ci.org/windsome/koa3-wechat) [![Dependencies Status](https://david-dm.org/windsome/koa3-wechat.png)](https://david-dm.org/windsome/koa3-wechat) [![Coverage Status](https://coveralls.io/repos/windsome/koa3-wechat/badge.png)](https://coveralls.io/r/windsome/koa3-wechat)
 ======
 
 微信公众平台消息接口服务中间件与API SDK
@@ -18,6 +18,8 @@ co-wechat [![NPM version](https://badge.fury.io/js/co-wechat.png)](http://badge.
   - user.js 用户管理接口
   - qrcode.js 获取永久及临时二维码
   - template.js 模板消息支持
+  - media.js 多媒体接口
+  - menu.js 自定义菜单
 
 ## Installation
 
@@ -30,21 +32,21 @@ $ npm install koa3-wechat
 ```js
 var wechat = require('koa3-wechat');
 
-app.use(wechat('some token').middleware(function *() {
-  // 微信输入信息都在this.weixin上
-  var message = this.weixin;
+app.use(wechat('some token').middleware(async function (ctx, next) {
+  // 微信输入信息都在ctx.weixin上
+  var message = ctx.weixin;
   if (message.FromUserName === 'diaosi') {
     // 回复屌丝(普通回复)
-    this.body = 'hehe';
+    ctx.body = 'hehe';
   } else if (message.FromUserName === 'text') {
     //你也可以这样回复text类型的信息
-    this.body = {
+    ctx.body = {
       content: 'text object',
       type: 'text'
     };
   } else if (message.FromUserName === 'hehe') {
     // 回复一段音乐
-    this.body = {
+    ctx.body = {
       type: "music",
       content: {
         title: "来段音乐吧",
@@ -55,13 +57,13 @@ app.use(wechat('some token').middleware(function *() {
     };
   } else if (message.FromUserName === 'kf') {
     // 转发到客服接口
-    this.body = {
+    ctx.body = {
       type: "customerService",
       kfAccount: "test1@test"
     };
   } else {
     // 回复高富帅(图文回复)
-    this.body = [
+    ctx.body = [
       {
         title: '你来我家接我吧',
         description: '这是女神与高富帅之间的对话',
@@ -79,13 +81,13 @@ app.use(wechat('some token').middleware(function *() {
 
 #### 回复文本
 ```js
-this.body = 'Hello world!';
+ctx.body = 'Hello world!';
 // 或者
-this.body = {type: "text", content: 'Hello world!'};
+ctx.body = {type: "text", content: 'Hello world!'};
 ```
 #### 回复图片
 ```js
-this.body = {
+ctx.body = {
   type: "image",
   content: {
     mediaId: 'mediaId'
@@ -94,7 +96,7 @@ this.body = {
 ```
 #### 回复语音
 ```js
-this.body = {
+ctx.body = {
   type: "voice",
   content: {
     mediaId: 'mediaId'
@@ -103,7 +105,7 @@ this.body = {
 ```
 #### 回复视频
 ```js
-this.body = {
+ctx.body = {
   type: "video",
   content: {
     mediaId: 'mediaId',
@@ -113,7 +115,7 @@ this.body = {
 ```
 #### 回复音乐
 ```js
-this.body = {
+ctx.body = {
   title: "来段音乐吧",
   description: "一无所有",
   musicUrl: "http://mp3.com/xx.mp3",
@@ -122,7 +124,7 @@ this.body = {
 ```
 #### 回复图文
 ```js
-this.body = [
+ctx.body = [
   {
     title: '你来我家接我吧',
     description: '这是女神与高富帅之间的对话',
@@ -134,27 +136,23 @@ this.body = [
 
 #### 回复空串
 ```js
-this.body = '';
+ctx.body = '';
 ```
 
 #### 转发到客服接口
 ```js
-this.body = {
+ctx.body = {
   type: "customerService",
   kfAccount: "test1@test" //可选
 };
 ```
 
+## api usage
+   see http://mp.zdili.com
+
 ## Show cases
-### Node.js API自动回复
-
-![Node.js API自动回复机器人](http://nodeapi.diveintonode.org/assets/qrcode.jpg)
-
-欢迎关注。
-
-代码：<https://github.com/JacksonTian/api-doc-service>
-
-你可以在[CloudFoundry](http://www.cloudfoundry.com/)、[appfog](https://www.appfog.com/)、[BAE](http://developer.baidu.com/wiki/index.php?title=docs/cplat/rt/node.js)等搭建自己的机器人。
+### 艺术品挖宝 <http://mp.zdili.com>
+### 公众号演示，搜索 "帝利文化"
 
 ## 详细API
 原始API文档请参见：[消息接口指南](http://mp.weixin.qq.com/wiki/index.php?title=消息接口指南)。
