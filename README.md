@@ -175,11 +175,11 @@ The MIT license.
   + ✔自定义菜单删除接口`Menu.removeMenu()`
   + ✔自定义菜单事件推送`Wechat.middleware(handle)`
   + ✔个性化菜单接口
-   - 创建个性化菜单`Menu.addConditionalMenu(menu)`
-   - 删除个性化菜单`delConditionalMenu(menuid)`
-   - 测试个性化菜单匹配结果`tryConditionalMenu(user_id)`
-   - 查询个性化菜单`Menu.getMenu()`
-   - 删除所有菜单`Menu.removeMenu()`
+    - 创建个性化菜单`Menu.addConditionalMenu(menu)`
+    - 删除个性化菜单`delConditionalMenu(menuid)`
+    - 测试个性化菜单匹配结果`tryConditionalMenu(user_id)`
+    - 查询个性化菜单`Menu.getMenu()`
+    - 删除所有菜单`Menu.removeMenu()`
   + ✔获取自定义菜单配置接口`Menu.getMenuConfig()`
   
 2. 消息管理
@@ -188,24 +188,24 @@ The MIT license.
   + 发送消息-被动回复消息 `wechat.js`
   + 消息加解密说明
   + 发送消息-客服消息 `custom_service.js`
-   1. 获取客服聊天记录 `getRecords (opts)`
-   2. 获取客服基本信息 `getCustomServiceList ()`
-   3. 获取在线客服接待信息 `getOnlineCustomServiceList ()`
-   4. 添加客服账号 `addKfAccount (account, nick)`
-   5. 邀请绑定客服帐号 `inviteworker (account, wx)`
-   6. 设置客服账号 `updateKfAccount (account, nick)`
-   7. 删除客服账号 `deleteKfAccount (account, nickname, password)`
-   8. 设置客服头像 `async setKfAccountAvatar (account, filepath)`
-   9. 创建客服会话 `createKfSession (account, openid)`
+    1. 获取客服聊天记录 `getRecords (opts)`
+    2. 获取客服基本信息 `getCustomServiceList ()`
+    3. 获取在线客服接待信息 `getOnlineCustomServiceList ()`
+    4. 添加客服账号 `addKfAccount (account, nick)`
+    5. 邀请绑定客服帐号 `inviteworker (account, wx)`
+    6. 设置客服账号 `updateKfAccount (account, nick)`
+    7. 删除客服账号 `deleteKfAccount (account, nickname, password)`
+    8. 设置客服头像 `async setKfAccountAvatar (account, filepath)`
+    9. 创建客服会话 `createKfSession (account, openid)`
   + 发送消息-群发接口和原创校验
   + ✔发送消息-模板消息接口(template.js)
-   - 设置所属行业`setIndustry(id1, id2)`
-   - 获取设置的行业信息`getIndustry()`
-   - 获得模板ID`addTemplate(templateIdShort)`
-   - 获取模板列表`getAllPrivateTemplate()`
-   - 删除模板`delTemplate (templateId)`
-   - 发送模板消息`sendTemplate (openid, templateId, returnUrl, topColor, data)`
-   - 事件推送`Wechat.middleware(handle)中模板消息`
+    - 设置所属行业`setIndustry(id1, id2)`
+    - 获取设置的行业信息`getIndustry()`
+    - 获得模板ID`addTemplate(templateIdShort)`
+    - 获取模板列表`getAllPrivateTemplate()`
+    - 删除模板`delTemplate (templateId)`
+    - 发送模板消息`sendTemplate (openid, templateId, returnUrl, topColor, data)`
+    - 事件推送`Wechat.middleware(handle)中模板消息`
   + 发送消息-一次性订阅消息
   + 发送消息-模板消息运营规范
   + 获取公众号的自动回
@@ -232,23 +232,23 @@ The MIT license.
 
 6. 用户管理`user.js`
   + 用户标签管理-标签管理
-   1. 创建标签`createTags (name)`
-   2. 获取公众号已创建的标签`getTags ()`
-   3. 编辑标签`updateTag (id, name)`
-   4. 删除标签`deleteTag (id)`
-   5. 获取标签下粉丝列表`getUsersFromTag (tagId, nextOpenId)`
+    1. 创建标签`createTags (name)`
+    2. 获取公众号已创建的标签`getTags ()`
+    3. 编辑标签`updateTag (id, name)`
+    4. 删除标签`deleteTag (id)`
+    5. 获取标签下粉丝列表`getUsersFromTag (tagId, nextOpenId)`
   + 用户标签管理-用户管理
-   1. 批量为用户打标签 `batchTagging (openIdList, tagId)`
-   2. 批量为用户取消标签 `batchUnTagging (openIdList, tagId)`
-   3. 获取用户身上的标签列表 `getIdList (openId)`
+    1. 批量为用户打标签 `batchTagging (openIdList, tagId)`
+    2. 批量为用户取消标签 `batchUnTagging (openIdList, tagId)`
+    3. 获取用户身上的标签列表 `getIdList (openId)`
   + 设置用户备注名 `updateRemark (openid, remark)`
   + 获取用户基本信息(UnionID机制) `getUser (openid, lang = 'zh_CN')`
   + 获取用户列表 `getFollowers (nextOpenid)`
   + 获取用户地理位置 `wechat event:LOCATION`
   + 黑名单管理
-   1. 获取公众号的黑名单列表
-   2. 拉黑用户
-   3. 取消拉黑用户
+    1. 获取公众号的黑名单列表
+    2. 拉黑用户
+    3. 取消拉黑用户
 7. 帐号管理`qrcode.js`, `shorturl.js`
   + 生成带参数的二维码 `createTmpQRCode (sceneId, expire = 1800)`, `createLimitQRCode (sceneId)`, `showQRCodeURL (ticket)`
   + 长链接转短链接接口 `shorturl (longUrl)`
