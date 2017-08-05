@@ -6,12 +6,12 @@ import mqtt from 'mqtt'
 import _ from 'lodash'
 
 import emitter from './emitter';
-import Koa3Wechat from '../wechat';
-import WechatOauth from '../oauth';
-import WechatUser from '../user';
-import WechatPay from '../wepay';
-import WechatJssdk from '../jssdk';
-import WechatQrcode from '../qrcode';
+import Koa3Wechat from '../src/wechat';
+import WechatOauth from '../src/oauth';
+import WechatUser from '../src/user';
+import WechatPay from '../src/wepay';
+import WechatJssdk from '../src/jssdk';
+import WechatQrcode from '../src/qrcode';
 
 import config from './config';
 
