@@ -3,3 +3,4 @@ example
 .DS_Store
 coverage
 npm-debug.log
+package-lock.json
