@@ -3,8 +3,8 @@ import xml2js from 'xml2js';
 import request from 'request';
 import https from 'https';
 import url_mod from 'url';
-import md5 from 'md5';
-import sha1 from 'sha1';
+import md5 from './_md5sum';
+import sha1 from './_sha1sum';
 
 import _debug from 'debug'
 const debug = _debug('app:server:wepay')
