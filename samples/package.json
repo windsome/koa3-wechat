@@ -77,7 +77,6 @@
     "imports-loader": "^0.6.5",
     "isparta-loader": "^2.0.0",
     "json-loader": "^0.5.4",
-    "jssha": "^1.5.0",
     "koa": "2.0.0-alpha.3",
     "koa-bodyparser": "^2.2.0",
     "koa-redis": "^2.1.2",
