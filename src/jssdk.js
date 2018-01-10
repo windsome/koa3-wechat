@@ -1,6 +1,7 @@
 import _debug from 'debug'
 const debug = _debug('app:wechat:jssdk')
 import Base from './base'
+import crypto from 'crypto'
 
 export default class Jssdk extends Base {
     constructor (opts = {}) {
@@ -41,12 +42,17 @@ export default class Jssdk extends Base {
             timestamp: currentTimestamp,
             url: url 
         };
-        var string = raw(ret);
-        var jsSHA = require('jssha');
-        var shaObj = new jsSHA(string, 'TEXT');
-        ret.signature = shaObj.getHash('SHA-1', 'HEX');
-        ret.appId = this.appId;
         
+        var string = raw(ret);
+
+        var shasum = crypto.createHash('sha1');
+        shasum.update(string);
+        ret.signature = shasum.digest('hex');
+        // var jsSHA = require('jssha');
+        // var shaObj = new jsSHA(string, 'TEXT');
+        // ret.signature = shaObj.getHash('SHA-1', 'HEX');
+        
+        ret.appId = this.appId;
         return ret;
     }
 
