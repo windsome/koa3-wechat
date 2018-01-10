@@ -35,7 +35,62 @@ $ npm install koa3-wechat
 
 
 ## api usage
-   see http://mp.zdili.com
+   see <http://mp.zdili.com>
+   see <http://nb.qingshansi.cn>
+
+### 使用方法
+```
+  // 服务商下特约商户的参数
+  let config = {
+    appId: 'wxc...................', //服务商APPID，邮件中
+    mchId: '14........',
+    notifyUrl: 'http://<你的域名>/apis/pay_notify', // 设置到微信支付后台
+    partnerKey: '1234567890abcdefghijklmnopqrstuv', // 设置成你自己的key，在pay.weixin.qq.com设置
+    subAppId: 'wxf...............',
+    subMchId: '14........',
+    pfx: fs.readFileSync(__dirname + '/apiclient_cert_14.........p12'),
+    passphrase: '14........'
+  }
+
+  // 普通商户的参数
+  let config = {
+    appId: 'wx7...................', //服务商APPID，邮件中
+    mchId: '14........',
+    notifyUrl: 'http://<你的域名>/apis/pay_notify', // 设置到微信支付后台
+    partnerKey: '1234567890abcdefghijklmnopqrstuv', // 设置成你自己的key，在pay.weixin.qq.com设置
+    pfx: fs.readFileSync(__dirname + '/apiclient_cert_14.........p12'),
+    passphrase: '14........'
+  },
+
+  // 初始化
+  let wepay = new WechatPay(config);
+
+  // 获取订单的预支付信息
+  var trade = {
+    body: '描述信息', //最长127字节
+    attach: '附加信息', //最长127字节
+    out_trade_no: '<订单ID，一般用订单表的唯一ID或UUID>', //
+    total_fee: '<订单总价>', //以分为单位，货币的最小金额
+    trade_type: 'JSAPI',
+    spbill_create_ip: '<发起支付的IP>', //ctx.request.ip
+  };
+  if (config.subMchId) {
+    // 特约商户, 传入sub_openid
+    trade = { ...trade, sub_openid: openid };
+  } else {
+    // 普通商户，传入openid
+    trade = { ...trade, openid };
+  }
+  var params = await wepay.getBrandWCPayRequestParams(trade);
+  if (!params || !(params.package && params.paySign)) {
+    console.log('error! getBrandWCPayRequestParams() return null!');
+  }
+  // 支付成功后会有notify
+
+  // 退款
+  var retobj = await wepay.refund({ out_trade_no });
+
+```
 
 ## Show cases
 ### 艺术品挖宝 <http://mp.zdili.com>
