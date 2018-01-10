@@ -15,7 +15,7 @@ const signTypes = {
     SHA1: sha1
 };
 
-var URLS_NORMAL = {
+let URLS_NORMAL = {
     UNIFIED_ORDER: 'https://api.mch.weixin.qq.com/pay/unifiedorder',
     ORDER_QUERY: 'https://api.mch.weixin.qq.com/pay/orderquery',
     REFUND: 'https://api.mch.weixin.qq.com/secapi/pay/refund',
@@ -25,7 +25,7 @@ var URLS_NORMAL = {
     CLOSE_ORDER: 'https://api.mch.weixin.qq.com/pay/closeorder'
 };
 
-var URLS_SANDBOX = {
+let URLS_SANDBOX = {
     GET_SIGN_KEY: 'https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey',
     UNIFIED_ORDER: 'https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder',
     ORDER_QUERY: 'https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery',
@@ -36,8 +36,8 @@ var URLS_SANDBOX = {
     CLOSE_ORDER: 'https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder'
 };
 
-//var URLS = URLS_SANDBOX;
-var URLS = URLS_NORMAL;
+//let URLS = URLS_SANDBOX;
+let URLS = URLS_NORMAL;
 
 export default class Wepay {
     constructor (config = {}) {
@@ -53,8 +53,8 @@ export default class Wepay {
     }
 
     async getBrandWCPayRequestParams (order) {
-        var self = this;
-        var default_params = {
+        let self = this;
+        let default_params = {
             appId: this.appId,
             timeStamp: this._generateTimeStamp(),
             nonceStr: this._generateNonceStr(),
@@ -63,9 +63,9 @@ export default class Wepay {
         
         order = { notify_url: this.notifyUrl, ...order };
 
-        var retobj = await this.unifiedOrder(order)
+        let retobj = await this.unifiedOrder(order)
         
-        var params  = {...default_params, package: 'prepay_id=' + retobj.prepay_id }
+        let params  = {...default_params, package: 'prepay_id=' + retobj.prepay_id }
         //if (order.total_fee) params.total_fee = order.total_fee+"";
         params.paySign = this._getSign (params);
         if(order.trade_type == 'NATIVE'){
@@ -89,21 +89,21 @@ export default class Wepay {
             throw new Error('Missing url or accessToken, url='+(data && data.url)+', accessToken='+(data && data.accessToken));
         }
 
-        var params = {
+        let params = {
             appId: this.appId,
             scope: 'jsapi_address',
             signType: 'SHA1',
             timeStamp: this._generateTimeStamp(),
             nonceStr: this._generateNonceStr(),
         };
-        var signParams = {
+        let signParams = {
             appid: params.appId,
             url: data.url,
             timestamp: params.timeStamp,
             noncestr: params.nonceStr,
             accesstoken: data.accessToken,
         };
-        var string = this._toQueryString(signParams);
+        let string = this._toQueryString(signParams);
         params.addrSign = signTypes[params.signType](string);
         return params;
     }
@@ -112,12 +112,12 @@ export default class Wepay {
         if (!URLS.GET_SIGN_KEY) {
             throw new Error ("not in sandbox mode!");
         }
-        var params = {
+        let params = {
             mch_id: this.mchId,
             nonce_str: this._generateNonceStr(),
         };
         this.partnerKey = this.orignPartnerKey;
-        var retobj = await this.sendAndReceiveData(URLS.GET_SIGN_KEY, params);
+        let retobj = await this.sendAndReceiveData(URLS.GET_SIGN_KEY, params);
         if (retobj.sandbox_signkey) {
             debug ("set partnerKey from ", this.partnerKey, " to ", retobj.sandbox_signkey);
             this.partnerKey = retobj.sandbox_signkey;
@@ -126,7 +126,7 @@ export default class Wepay {
     }
 
     async unifiedOrder (params) {
-        var requiredData = ['body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'trade_type'];
+        let requiredData = ['body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'trade_type'];
         if(params.trade_type == 'JSAPI'){
             requiredData.push('openid|sub_openid');
             requiredData.push('appid|sub_appid');
@@ -155,18 +155,18 @@ export default class Wepay {
     }
 
     async downloadBill (params){
-        var data = await this.sendAndReceiveData(URLS.DOWNLOAD_BILL, params, ['bill_date', 'bill_type']);
+        let data = await this.sendAndReceiveData(URLS.DOWNLOAD_BILL, params, ['bill_date', 'bill_type']);
         if (data.type === 'text') {
             // parse xml fail, parse csv.
-            var rows = data.xml.trim().split(/\r?\n/);
+            let rows = data.xml.trim().split(/\r?\n/);
 
             const toArr = (rows) => {
-                var titles = rows[0].split(',');
-                var bodys = rows.splice(1);
-                var data = [];
+                let titles = rows[0].split(',');
+                let bodys = rows.splice(1);
+                let data = [];
 
                 bodys.forEach((row) => {
-                    var rowData = {};
+                    let rowData = {};
                     row.split(',').forEach((cell,i) => {
                         rowData[titles[i]] = cell.split('`')[1];
                     });
@@ -194,13 +194,14 @@ export default class Wepay {
 
 
     async sendAndReceiveData (url, params, required = [], useCert = false) {
-        var defaults = { 
+        let defaults = { 
             appid: this.appId,
-            sub_appid: this.subAppId,
             mch_id: this.mchId,
-            sub_mch_id: this.subMchId,
             nonce_str: this._generateNonceStr(),
         };
+        if (this.subAppId && this.subMchId) {
+            defaults = {...defaults, sub_appid: this.subAppId, sub_mch_id: this.subMchId };
+        }
         params = { ...defaults, ...params };
         params.sign = this._getSign (params); 
 
@@ -208,16 +209,16 @@ export default class Wepay {
             params.long_url = encodeURIComponent(params.long_url);
         }
         
-        for(var key in params){
+        for(let key in params){
             if(params[key] !== undefined && params[key] !== null){
                 params[key] = params[key].toString();
             }
         }
 
-        var missing = [];
+        let missing = [];
         required.forEach((key) => {
-            var alters = key.split('|');
-            for (var i = alters.length - 1; i >= 0; i--) {
+            let alters = key.split('|');
+            for (let i = alters.length - 1; i >= 0; i--) {
                 if (params[alters[i]]) {
                     return;
                 }
@@ -230,10 +231,10 @@ export default class Wepay {
             throw new Error ('missing params ' + missing.join(','));
         }
 
-        var requestFn = (useCert ? this._requestWithCert : this._request).bind(this);
+        let requestFn = (useCert ? this._requestWithCert : this._request).bind(this);
         debug ("request:", params);
-        var xml = null;
-        var data = null;
+        let xml = null;
+        let data = null;
         try {
             xml = await requestFn (url, this._buildXml(params));
             data = await this._parseXml (xml);
@@ -246,7 +247,7 @@ export default class Wepay {
             debug ("pay success!");
         } else {
             debug ("error! pay fail!");
-            var errmsg = data.err_code_des || data.err_code || data.result_code || data.return_msg;
+            let errmsg = data.err_code_des || data.err_code || data.result_code || data.return_msg;
             throw new Error ('pay fail! ' + errmsg);
         }
         return data;
@@ -278,8 +279,8 @@ export default class Wepay {
     
     _requestWithCert (url, data) {
         return new Promise ( (resolve, reject) => {
-            var parsed_url = url_mod.parse(url);
-            var opts = {
+            let parsed_url = url_mod.parse(url);
+            let opts = {
                 host: parsed_url.host,
                 port: 443,
                 path: parsed_url.path,
@@ -288,8 +289,8 @@ export default class Wepay {
                 method: 'POST'
             };
             debug ("_requestWithCert:", opts);
-            var req = https.request(opts, (res) => {
-                var content = '';
+            let req = https.request(opts, (res) => {
+                let content = '';
                 res.on('data', function(chunk) {
                     content += chunk;
                 });
@@ -307,10 +308,10 @@ export default class Wepay {
     }
     
     _buildXml (obj) {
-        var builder = new xml2js.Builder({
+        let builder = new xml2js.Builder({
             allowSurrogateChars: true
         });
-        var xml = builder.buildObject({
+        let xml = builder.buildObject({
             xml:obj
         });
         //console.dir (xml);
@@ -319,7 +320,7 @@ export default class Wepay {
 
     _parseXml (xml) {
         return new Promise ( (resolve, reject) => {
-            var parser = new xml2js.Parser({
+            let parser = new xml2js.Parser({
                 trim: true,
                 explicitArray: false
             });
@@ -332,11 +333,11 @@ export default class Wepay {
     }
 
     _getSign (pkg, signType) {
-        var { sign, ...pkg2 } = pkg;
+        let { sign, ...pkg2 } = pkg;
         signType = signType || 'MD5';
-        var string1 = this._toQueryString(pkg2);
-        var stringSignTemp = string1 + '&key=' + this.partnerKey;
-        var signValue = signTypes[signType](stringSignTemp).toUpperCase();
+        let string1 = this._toQueryString(pkg2);
+        let stringSignTemp = string1 + '&key=' + this.partnerKey;
+        let signValue = signTypes[signType](stringSignTemp).toUpperCase();
         return signValue;
     }
 
@@ -358,10 +359,10 @@ export default class Wepay {
      * @return {[type]}        [description]
      */
     _generateNonceStr (length) {
-        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var maxPos = chars.length;
-        var noceStr = '';
-        for (var i = 0; i < (length || 32); i++) {
+        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let maxPos = chars.length;
+        let noceStr = '';
+        for (let i = 0; i < (length || 32); i++) {
             noceStr += chars.charAt(Math.floor(Math.random() * maxPos));
         }
         return noceStr;
