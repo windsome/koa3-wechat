@@ -1,0 +1,14 @@
+219668615.jpg
+.gitignore
+Makefile
+package-lock.json
+test
+.babelrc
+README.md
+.travis.yml
+doc
+.jshintrc
+.npmignore
+samples
+.git
+src
