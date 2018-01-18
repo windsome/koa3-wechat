@@ -3,6 +3,11 @@ koa3-wechat [![NPM version](https://badge.fury.io/js/koa3-wechat.png)](http://ba
 
 微信公众平台消息接口服务中间件与API SDK
 
+## 安装
+```sh
+$ npm install koa3-wechat
+```
+
 ## 功能列表
 + 微信用户消息和事件推送处理功能（即接受URL转发的消息），开发者可在 开发->基本设置->修改配置->URL(服务器地址) 设置。
   - 对应于wechat.js
@@ -20,25 +25,15 @@ koa3-wechat [![NPM version](https://badge.fury.io/js/koa3-wechat.png)](http://ba
   - template.js 模板消息支持
   - media.js 多媒体接口
   - menu.js 自定义菜单
-+ 具体微信公众平台功能清单详见 [公众平台api完成进度](doc/api_mp.md)
-+ 具体微信支付功能清单详见 [微信支付api完成进度](doc/api_payment.md)
++ 具体微信公众平台功能清单详见 [公众平台api完成进度](./doc/api_mp.md)
++ 具体微信支付功能清单详见 [微信支付api完成进度](./doc/api_payment.md)
 
-## Installation
-
-```sh
-$ npm install koa3-wechat
-```
-
-## Use with koa
+## 与koa2配合使用
 ### 公众号消息自动回复，使用wechat.js.
-    详见 [wechat.js用法](doc/usage_wechat.md)
-
-
-## api usage
-   see <http://mp.zdili.com>
-   see <http://nb.qingshansi.cn>
+    详见 [wechat.js用法](./doc/usage_wechat.md)
 
 ### 使用方法
+#### 微信支付使用方法
 ```
   // 服务商下特约商户的参数
   let config = {
@@ -86,15 +81,18 @@ $ npm install koa3-wechat
     console.log('error! getBrandWCPayRequestParams() return null!');
   }
   // 支付成功后会有notify
+  // see <https://github.com/windsome/windpress/blob/1619f7ec01e2cb1e85857702d381304e79713e53/server/wechat/index.js#L269>
 
   // 退款
   var retobj = await wepay.refund({ out_trade_no });
 
 ```
 
-## Show cases
-### 艺术品挖宝 <http://mp.zdili.com>
-### 公众号演示，搜索 "帝利文化"
+## 实例
+### 艺术品挖宝 <http://mp.zdili.com> , 公众号演示，搜索 "帝利文化"
+### nbiot物联网+微信公众号+微信支付 ，公众号演示，搜索 "飞觉网络"
+### windpress是一个简单的一元夺宝项目，其中有微信api使用方法
+项目源码 <https://github.com/windsome/windpress>
 
 ## 详细API
 原始API文档请参见：[消息接口指南](http://mp.weixin.qq.com/wiki/index.php?title=消息接口指南)。
@@ -103,7 +101,7 @@ $ npm install koa3-wechat
 微信开发QQ群： 573207886
 
 ## 捐赠
-<img src="./219668615.jpg" width="300" alt="捐赠" align=center />
+<img src="./219668615.jpg" width="200" alt="捐赠" align=center />
 
 ## License
 The MIT license.

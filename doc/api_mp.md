@@ -14,10 +14,10 @@
   + ✔获取自定义菜单配置接口`Menu.getMenuConfig()`
   
 2. 消息管理
-  + 接收消息-接收普通消息 `wechat.js`
-  + 接收消息-接收事件推送 `wechat.js`
-  + 发送消息-被动回复消息 `wechat.js`
-  + 消息加解密说明
+  + ✔接收消息-接收普通消息 `wechat.js`
+  + ✔接收消息-接收事件推送 `wechat.js`
+  + ✔发送消息-被动回复消息 `wechat.js`
+  + ✔消息加解密说明
   + 发送消息-客服消息 `custom_service.js`
     1. 获取客服聊天记录 `getRecords (opts)`
     2. 获取客服基本信息 `getCustomServiceList ()`
@@ -28,7 +28,7 @@
     7. 删除客服账号 `deleteKfAccount (account, nickname, password)`
     8. 设置客服头像 `async setKfAccountAvatar (account, filepath)`
     9. 创建客服会话 `createKfSession (account, openid)`
-  + 发送消息-群发接口和原创校验
+  + ✔发送消息-群发接口和原创校验
   + ✔发送消息-模板消息接口(template.js)
     - 设置所属行业`setIndustry(id1, id2)`
     - 获取设置的行业信息`getIndustry()`
