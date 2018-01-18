@@ -5,7 +5,7 @@ koa3-wechat [![NPM version](https://badge.fury.io/js/koa3-wechat.png)](http://ba
 
 ## 安装
 ```sh
-$ npm install koa3-wechat
+npm install koa3-wechat
 ```
 
 ## 功能列表
@@ -89,12 +89,15 @@ $ npm install koa3-wechat
 ```
 
 ## 实例
-### 艺术品挖宝 <http://mp.zdili.com> , 公众号演示，搜索 "帝利文化"
-### nbiot物联网+微信公众号+微信支付 ，公众号演示，搜索 "飞觉网络"
-### windpress是一个简单的一元夺宝项目，其中有微信api使用方法
-项目源码 <https://github.com/windsome/windpress>
+1. 艺术品挖宝 <http://mp.zdili.com> , 公众号演示，搜索 "帝利文化"
+2. nbiot物联网+微信公众号+微信支付 ，公众号演示，搜索 "飞觉网络"
 
-## 详细API
+## 实例源码
+1. windpress是一个简单的一元夺宝项目，其中有微信api使用方法
+项目源码 <https://github.com/windsome/windpress>
+2. 即将上线，一个nbiot的项目，用户通过微信扫码某个nbiot设备进入页面支付，支付完成启动设备。
+
+## 微信官方文档，详细API
 原始API文档请参见：[消息接口指南](http://mp.weixin.qq.com/wiki/index.php?title=消息接口指南)。
 
 ## 交流群
