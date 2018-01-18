@@ -30,7 +30,7 @@ $ npm install koa3-wechat
 
 ## 与koa2配合使用
 ### 公众号消息自动回复，使用wechat.js.
-    详见 [wechat.js用法](./doc/usage_wechat.md)
+详见 [wechat.js用法](./doc/usage_wechat.md)
 
 ### 使用方法
 #### 微信支付使用方法
