@@ -1,5 +1,5 @@
 import _debug from 'debug'
-const debug = _debug('app:server:wechat:custom_service')
+const debug = _debug('app:wechat:custom_service')
 import Base from './base'
 
 const path = require('path');

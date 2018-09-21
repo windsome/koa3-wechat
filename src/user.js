@@ -1,5 +1,5 @@
 import _debug from 'debug'
-const debug = _debug('wechat:base')
+const debug = _debug('app:wechat:user')
 import Base from './base'
 
 export default class User extends Base {

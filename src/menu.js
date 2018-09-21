@@ -1,5 +1,5 @@
 import _debug from 'debug'
-const debug = _debug('app:server:wechat:menu')
+const debug = _debug('app:wechat:menu')
 import Base from './base'
 
 export default class Menu extends Base {

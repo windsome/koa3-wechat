@@ -1,5 +1,5 @@
 import _debug from 'debug'
-const debug = _debug('app:server:wechat:ShortUrl')
+const debug = _debug('app:wechat:shortUrl')
 import Base from './base'
 
 export default class ShortUrl extends Base {

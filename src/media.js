@@ -1,5 +1,5 @@
 import _debug from 'debug'
-const debug = _debug('app:server:wechat:media')
+const debug = _debug('app:wechat:media')
 import Base from './base'
 
 const path = require('path');

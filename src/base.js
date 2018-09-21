@@ -90,8 +90,9 @@ export default class Base {
             .then (retobj => {
                 if (retobj){
                     debug ("_request fetch return:", retobj);
-                    if (retobj.errcode && retobj.errcode === 0) {
-                        debug ("get error!");
+                    if (retobj.errcode) {
+                        // debug ("get error!");
+                        throw retobj;
                     }
                     return retobj;
                 } else {
@@ -101,7 +102,7 @@ export default class Base {
             })
             .catch (error => {
                 debug ("error!", error);
-                return { errcode:-2, message: error.message };
+                return { errcode:error.errcode||-2, message: error.errmsg||error.message };
             })
     }
     
