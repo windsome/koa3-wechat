@@ -1,66 +1,43 @@
 import _debug from 'debug'
-const debug = _debug('app:server:wechat:base')
+const debug = _debug('app:wechat:base')
 import _ from 'lodash';
-
-import redis from 'redis';
-const redisClient = redis.createClient();
-redisClient.on("error", (err) => {
-    debug("Error", err);
-});
+import createBackend from './backend';
 
 export default class Base {
-    static accessTokenBase = {
-    }
-
+    /**
+     * opts = {
+     *  appId,
+     *  appSecret,
+     *  backend: {
+     *    type: memory/redis,
+     *    url
+     *   }
+     * }
+     * @param {object} opts 
+     */
     constructor (opts = {}) {
         this.appId = opts.appId;
         this.appSecret = opts.appSecret;
-        //this.accessToken = {};
+        this.backend = createBackend(opts.backend);
     }
 
     _saveAccessToken (appId, accessToken) {
-        Base.accessTokenBase[appId] = accessToken;
-        return new Promise ((resolve, reject) => {
-            redisClient.hmset("accessToken", appId, JSON.stringify(accessToken), (err, res) =>{
-                if (err) {
-                    debug ("warning! save to redis fail, but we return ok, because we store it in class cache [accessTokenBase]!", err, res);
-                    //reject(err);
-                    resolve (accessToken)
-                } else resolve (accessToken);
-            });
-        }).catch (error => {
-            debug ("error! save to redis fail, but we return ok, because we store it in class cache [accessTokenBase]!", error);
-            return accessToken;
-        })
+        return this.backend.mset('accessToken', appId, accessToken).catch(error => accessToken);
     }
     _readAccessToken (appId) {
-        return new Promise ((resolve, reject) => {
-            redisClient.hmget("accessToken", appId, (err, reply) => {
-                if (err) {
-                    reject (new Error("warning! read from redis fail"+err));
-                    //reject(err);
-                } else {
-                    if (reply.length > 0) {
-                        var accessToken = JSON.parse(reply[0]);
-                        Base.accessTokenBase[appId] = accessToken;
-                        resolve (accessToken);
-                    } else {
-                        reject (new Error("warning! find none in redis!"));
-                    }
-                }
-            });
-        }).catch (error => {
-            debug ("error! read from redis fail, but we return the one stored it in class cache [accessTokenBase]!", error);
-            return Base.accessTokenBase[appId];
-        })
+        return this.backend.mget('accessToken', appId);
     }
 
     getAccessToken () {
         return this._readAccessToken(this.appId).then (accessToken => {
+            if (!accessToken) {
+                debug ('no accessToken.'+this.appId+', need get a new one.');
+                return this._fetchAccessToken ();
+            }
             var currentTimestamp = parseInt(new Date().getTime() / 1000);
-            var expireTime = (accessToken && accessToken.expire_time) || 0;
-            if (!accessToken || (expireTime < currentTimestamp)) {
-                debug ("accessToken has expire, need to request a new one!", accessToken, currentTimestamp);
+            var expireTime = accessToken.expire_time || 0;
+            if (expireTime < currentTimestamp) {
+                debug ('accessToken has expire, need to request a new one!', accessToken, currentTimestamp);
                 return this._fetchAccessToken ();
             }
             return accessToken;

@@ -6,8 +6,8 @@ import crypto from 'crypto'
 export default class Jssdk extends Base {
     constructor (opts = {}) {
         super (opts)
-        this.apiTickets = {
-        };
+        // this.apiTickets = {
+        // };
     }
 
     async getSignPackage (url) {
@@ -57,7 +57,8 @@ export default class Jssdk extends Base {
     }
 
     async _getJsApiTicket() {
-        var cachedTicket = this.apiTickets[this.appId];
+        let cachedTicket = await this.backend.mget('apiTickets', this.appId);
+        // var cachedTicket = this.apiTickets[this.appId];
         var currentTimestamp = parseInt(new Date().getTime() / 1000);
         var expireTime = (cachedTicket && cachedTicket.expire_time) || 0;
         if (expireTime < currentTimestamp) {
@@ -69,7 +70,8 @@ export default class Jssdk extends Base {
                 var newTicket = {};
                 newTicket.expire_time = currentTimestamp + 7200;
                 newTicket.ticket = resJson.ticket;
-                this.apiTickets[this.appId] = newTicket;
+                // this.apiTickets[this.appId] = newTicket;
+                await this.backend.mset('apiTickets', this.appId, newTicket);
                 cachedTicket = newTicket;
             } else {
                 debug ("error! _getJsApiTicket: request fail! url="+url);

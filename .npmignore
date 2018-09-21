@@ -12,3 +12,4 @@ doc
 samples
 .git
 src
+yarn.lock

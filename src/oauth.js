@@ -6,10 +6,10 @@ import querystring from 'querystring';
 export default class Oauth extends Base {
     constructor (opts = {}) {
         super (opts)
-        this.oauthAccessToken = {
-        };
-        this.userInfo ={
-        };
+        // this.oauthAccessToken = {
+        // };
+        // this.userInfo ={
+        // };
     }
 
     /**
@@ -82,7 +82,8 @@ export default class Oauth extends Base {
         return this.get(url)
             .then((retobj) => {
                 if (retobj && retobj.openid) {
-                    this.oauthAccessToken[retobj.openid] = retobj;
+                    return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
+                    // this.oauthAccessToken[retobj.openid] = retobj;
                 } else {
                     debug ("not get openid!", retobj);
                 }
@@ -121,7 +122,8 @@ export default class Oauth extends Base {
         return this.get(url)
             .then((retobj) => {
                 if (retobj && retobj.openid) {
-                    this.oauthAccessToken[retobj.openid] = retobj;
+                    return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
+                    // this.oauthAccessToken[retobj.openid] = retobj;
                 } else {
                     debug ("not get openid!", retobj);
                 }
@@ -134,7 +136,8 @@ export default class Oauth extends Base {
         return this.get(url)
             .then((retobj) => {
                 if (retobj && retobj.openid) {
-                    this.userInfo[retobj.openid] = retobj;
+                    return this.backend.mset('userInfos', retobj.openid, retobj);
+                    // this.userInfo[retobj.openid] = retobj;
                 } else {
                     debug ("not get userinfo!", retobj);
                 }
@@ -257,7 +260,7 @@ export default class Oauth extends Base {
         return this.getOauthAccessToken(code)
             .then(retobj => {
                 if (retobj.openid) {
-                    if (scope == 'snsapi_userinfo') {
+                    if (scope === 'snsapi_userinfo') {
                         var openid = result.data.openid;
                         return this.getUser(retobj);
                     } else {

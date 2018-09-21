@@ -109,5 +109,17 @@ npm install koa3-wechat
 ## License
 The MIT license.
 
-## Contributors
+## 修订表
+1. 2018.9.19增加了backend支持,允许在微服务情况下配置后端缓存.目前允许`memory`和`redis`,默认为`memory`模式.
+```
+配置方法为参数中加入了
+opts = {
+  appId,
+  appSecret,
+  backend: {
+    type, // memory, redis.
+    url // redis url
+  }
+}
+```
 
