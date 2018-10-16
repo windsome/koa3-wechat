@@ -261,7 +261,6 @@ export default class Oauth extends Base {
             .then(retobj => {
                 if (retobj.openid) {
                     if (scope === 'snsapi_userinfo') {
-                        var openid = result.data.openid;
                         return this.getUser(retobj);
                     } else {
                         return retobj;
