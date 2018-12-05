@@ -9,13 +9,13 @@ import media from './media';
 import menu from './menu';
 
 export default {
-    wechat,
-    oauth,
-    user,
-    jssdk,
-    qrcode,
-    wepay,
-    template,
-    media,
-    menu
+  wechat,
+  oauth,
+  user,
+  jssdk,
+  qrcode,
+  wepay,
+  template,
+  media,
+  menu
 };

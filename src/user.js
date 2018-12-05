@@ -1,44 +1,46 @@
-import _debug from 'debug'
-const debug = _debug('app:wechat:user')
-import Base from './base'
+import _debug from 'debug';
+const debug = _debug('app:wechat:user');
+import Base from './base';
 
 export default class User extends Base {
-    constructor (opts = {}) {
-        super (opts)
-    }
+  constructor(opts = {}) {
+    super(opts);
+  }
 
-    /**
-     * 获取用户基本信息。可以设置lang，其中zh_CN 简体，zh_TW 繁体，en 英语。默认为en
-     * 详情请见：<http://mp.weixin.qq.com/wiki/index.php?title=获取用户基本信息>
-     * Examples:
-     * ```
-     * api.getUser(openid);
-     * api.getUser({openid: 'openid', lang: 'en'});
-     * ```
-     *
-     * Result:
-     * ```
-     * {
-     *  "subscribe": 1,
-     *  "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
-     *  "nickname": "Band",
-     *  "sex": 1,
-     *  "language": "zh_CN",
-     *  "city": "广州",
-     *  "province": "广东",
-     *  "country": "中国",
-     *  "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
-     *  "subscribe_time": 1382694957
-     * }
-     * ```
-     * @param {String|Object} options 用户的openid。或者配置选项，包含openid和lang两个属性。
-     */
-    getUser (openid, lang = 'zh_CN') {
-        var url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=LANG".replace(/OPENID/g, openid).replace(/LANG/g, lang);
-        return this.get(url);
-    }
+  /**
+   * 获取用户基本信息。可以设置lang，其中zh_CN 简体，zh_TW 繁体，en 英语。默认为en
+   * 详情请见：<http://mp.weixin.qq.com/wiki/index.php?title=获取用户基本信息>
+   * Examples:
+   * ```
+   * api.getUser(openid);
+   * api.getUser({openid: 'openid', lang: 'en'});
+   * ```
+   *
+   * Result:
+   * ```
+   * {
+   *  "subscribe": 1,
+   *  "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
+   *  "nickname": "Band",
+   *  "sex": 1,
+   *  "language": "zh_CN",
+   *  "city": "广州",
+   *  "province": "广东",
+   *  "country": "中国",
+   *  "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
+   *  "subscribe_time": 1382694957
+   * }
+   * ```
+   * @param {String|Object} options 用户的openid。或者配置选项，包含openid和lang两个属性。
+   */
+  getUser(openid, lang = 'zh_CN') {
+    var url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=LANG'
+      .replace(/OPENID/g, openid)
+      .replace(/LANG/g, lang);
+    return this.get(url);
+  }
 
-    /**
+  /**
      *  批量获取用户基本信息
      * Example:
      * ```
@@ -71,15 +73,16 @@ export default class User extends Base {
      * ```
      * @param {Array} openids 用户的openid数组。
      */
-    batchGetUsers (openids, lang='zh-CN') {
-        var url = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN";
-        var user_list = openids.map( (openid) => {
-            return {openid: openid, lang: lang};
-        });
-        return this.post (url, {user_list});
-    }
+  batchGetUsers(openids, lang = 'zh-CN') {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN';
+    var user_list = openids.map(openid => {
+      return { openid: openid, lang: lang };
+    });
+    return this.post(url, { user_list });
+  }
 
-    /**
+  /**
      * 获取关注者列表
      * 详细细节 http://mp.weixin.qq.com/wiki/index.php?title=获取关注者列表
      * Examples:
@@ -102,12 +105,15 @@ export default class User extends Base {
      * ```
      * @param {String} nextOpenid 调用一次之后，传递回来的nextOpenid。第一次获取时可不填
      */
-    getFollowers (nextOpenid) {
-        var url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID".replace(/NEXT_OPENID/g, nextOpenid||'');
-        return this.get(url);
-    }
+  getFollowers(nextOpenid) {
+    var url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&next_openid=NEXT_OPENID'.replace(
+      /NEXT_OPENID/g,
+      nextOpenid || ''
+    );
+    return this.get(url);
+  }
 
-    /**
+  /**
      * 设置用户备注名
      * 详细细节 http://mp.weixin.qq.com/wiki/index.php?title=设置用户备注名接口
      * Examples:
@@ -125,12 +131,13 @@ export default class User extends Base {
      * @param {String} openid 用户的openid
      * @param {String} remark 新的备注名，长度必须小于30字符
      */
-    updateRemark (openid, remark) {
-        var url = "https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=ACCESS_TOKEN";
-        return this.post(url, {openid, remark});
-    }
+  updateRemark(openid, remark) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=ACCESS_TOKEN';
+    return this.post(url, { openid, remark });
+  }
 
-    /**
+  /**
      * 创建标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -147,12 +154,13 @@ export default class User extends Base {
      * ```
      * @param {String} name 标签名
      */
-    createTags (name){
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/create?access_token=ACCESS_TOKEN"
-        return this.post(url, { tag: {name} });
-    }
+  createTags(name) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/create?access_token=ACCESS_TOKEN';
+    return this.post(url, { tag: { name } });
+  }
 
-    /**
+  /**
      * 获取公众号已创建的标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -180,12 +188,13 @@ export default class User extends Base {
      *  }
      * ```
      */
-    getTags () {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/get?access_token=ACCESS_TOKEN";
-        return this.get(url);
-    }
+  getTags() {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/get?access_token=ACCESS_TOKEN';
+    return this.get(url);
+  }
 
-    /**
+  /**
      * 编辑标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -203,12 +212,13 @@ export default class User extends Base {
      * @param {String} id 标签id
      * @param {String} name 标签名
      */
-    updateTag (id, name) {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/update?access_token=ACCESS_TOKEN";
-        return this.post(url, { tag: { id, name } });
-    }
+  updateTag(id, name) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/update?access_token=ACCESS_TOKEN';
+    return this.post(url, { tag: { id, name } });
+  }
 
-    /**
+  /**
      * 删除标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -225,12 +235,13 @@ export default class User extends Base {
      * ```
      * @param {String} id 标签id
      */
-    deleteTag (id) {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=ACCESS_TOKEN";
-        return this.post(url, { tag: {id} });
-    }
+  deleteTag(id) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=ACCESS_TOKEN';
+    return this.post(url, { tag: { id } });
+  }
 
-    /**
+  /**
      * 获取标签下粉丝列表
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -252,12 +263,13 @@ export default class User extends Base {
      * @param {String} tagId 标签id
      * @param {String} nextOpenId 第一个拉取的OPENID，不填默认从头开始拉取
      */
-    getUsersFromTag (tagId, nextOpenId) {
-        var url = "https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=ACCESS_TOKEN";
-        return this.post(url,{ tagid, next_openid: nextOpenId || '' });
-    }
+  getUsersFromTag(tagId, nextOpenId) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=ACCESS_TOKEN';
+    return this.post(url, { tagid, next_openid: nextOpenId || '' });
+  }
 
-    /**
+  /**
      * 批量为用户打标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -275,12 +287,13 @@ export default class User extends Base {
      * @param {Array} openIdList openId列表
      * @param {String} tagId 标签id
      */
-    batchTagging (openIdList, tagId) {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=ACCESS_TOKEN";
-        return this.post(url, { openid_list: openIdList || [], tagid: tagId });
-    }
+  batchTagging(openIdList, tagId) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=ACCESS_TOKEN';
+    return this.post(url, { openid_list: openIdList || [], tagid: tagId });
+  }
 
-    /**
+  /**
      * 批量为用户取消标签
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -298,12 +311,13 @@ export default class User extends Base {
      * @param {Array} openIdList openId列表
      * @param {String} tagId 标签id
      */
-    batchUnTagging (openIdList, tagId) {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=ACCESS_TOKEN";
-        return this.post(url, { openid_list: openIdList || [], tagid: tagId });
-    }
+  batchUnTagging(openIdList, tagId) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=ACCESS_TOKEN';
+    return this.post(url, { openid_list: openIdList || [], tagid: tagId });
+  }
 
-    /**
+  /**
      * 获取用户身上的标签列表
      * 详细细节 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
      * Examples:
@@ -318,9 +332,9 @@ export default class User extends Base {
      *   }
      * ```
      */
-    getIdList (openId) {
-        var url = "https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token=ACCESS_TOKEN";
-        return this.post(url, { openid: openId });
-    }
-
+  getIdList(openId) {
+    var url =
+      'https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token=ACCESS_TOKEN';
+    return this.post(url, { openid: openId });
+  }
 }
