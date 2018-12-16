@@ -28,12 +28,20 @@ export default class Base {
     }
     if (opts.getAccessToken) {
       this.getAccessToken = opts.getAccessToken;
+      this.getAppId = opts.getAppId;
+      this.getAppSecret = opts.getAppSecret;
+      this.readApiTicket = opts.readApiTicket;
+      this.saveApiTicket = opts.saveApiTicket;
     } else {
       let accessToken = new DefaultAccessToken(opts);
       // this.appId = opts.appId;
       // this.appSecret = opts.appSecret;
       // this.backend = createBackend(opts.backend);
       this.getAccessToken = accessToken.getAccessToken;
+      this.getAppId = accessToken.getAppId;
+      this.getAppSecret = accessToken.getAppSecret;
+      this.readApiTicket = accessToken.readApiTicket;
+      this.saveApiTicket = accessToken.saveApiTicket;
     }
   }
 

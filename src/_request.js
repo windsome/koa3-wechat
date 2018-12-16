@@ -15,7 +15,7 @@ export const requestOrigin = (url, opts = {}) => {
       .then(response => {
         let contentType = response.headers.get('content-type');
         //console.log ("contentType:", contentType);
-        if (contentType.includes('application/json')) {
+        if (contentType.includes('application/json')|| contentType.includes('text/plain')) {
           return response.json();
         } else {
           console.log("Oops, we haven't got JSON!");

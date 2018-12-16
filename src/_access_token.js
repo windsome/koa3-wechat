@@ -20,7 +20,12 @@ export default class AccessToken {
     this.appId = opts.appId;
     this.appSecret = opts.appSecret;
     this.backend = createBackend(opts.backend);
-  }
+    this.getAccessToken = this.getAccessToken.bind(this);
+    this.getAppId = this.getAppId.bind(this);
+    this.getAppSecret = this.getAppSecret.bind(this);
+    this.readApiTicket = this.readApiTicket.bind(this);
+    this.saveApiTicket = this.saveApiTicket.bind(this);
+}
 
   getAccessToken(force = false) {
     if (force) return this._fetchAccessToken();
@@ -87,4 +92,20 @@ export default class AccessToken {
       }
     });
   }
+
+  getAppId() {
+    return this.appId;
+  }
+  getAppSecret () {
+    return this.appSecret;
+  }
+  saveApiTicket(ticket) {
+    return this.backend
+      .mset('apiTickets', this.appId, ticket)
+      .catch(error => ticket);
+  }
+  readApiTicket() {
+    return this.backend.mget('apiTickets', this.appId);
+  }
+
 }

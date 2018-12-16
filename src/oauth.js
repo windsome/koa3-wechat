@@ -6,10 +6,6 @@ import querystring from 'querystring';
 export default class Oauth extends Base {
   constructor(opts = {}) {
     super(opts);
-    // this.oauthAccessToken = {
-    // };
-    // this.userInfo ={
-    // };
   }
 
   /**
@@ -21,7 +17,7 @@ export default class Oauth extends Base {
   getAuthorizeURL(redirect, state, scope) {
     var url = 'https://open.weixin.qq.com/connect/oauth2/authorize';
     var info = {
-      appid: this.appId,
+      appid: this.getAppId(),
       redirect_uri: redirect,
       response_type: 'code',
       scope: scope || 'snsapi_base',
@@ -40,7 +36,7 @@ export default class Oauth extends Base {
   getAuthorizeURLForWebsite(redirect, state, scope) {
     var url = 'https://open.weixin.qq.com/connect/qrconnect';
     var info = {
-      appid: this.appId,
+      appid: this.getAppId(),
       redirect_uri: redirect,
       response_type: 'code',
       scope: scope || 'snsapi_login',
@@ -79,16 +75,15 @@ export default class Oauth extends Base {
    */
   getOauthAccessToken(code) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code'
-      .replace(/APPID/g, this.appId)
-      .replace(/SECRET/g, this.appSecret)
+      .replace(/APPID/g, this.getAppId())
+      .replace(/SECRET/g, this.getAppSecret())
       .replace(/CODE/g, code);
     return this.get(url).then(retobj => {
-      if (retobj && retobj.openid) {
-        return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
-        // this.oauthAccessToken[retobj.openid] = retobj;
-      } else {
-        debug('not get openid!', retobj);
+      if (!(retobj && retobj.openid)) {
+        debug('warning! not get openid!', retobj);
       }
+      // // TODO: do we need save tokens?
+      // return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
       return retobj;
     });
   }
@@ -121,15 +116,14 @@ export default class Oauth extends Base {
    */
   refreshOauthAccessToken(refreshToken) {
     var url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN'
-      .replace(/APPID/g, this.appId)
+      .replace(/APPID/g, this.getAppId())
       .replace(/REFRESH_TOKEN/g, refreshToken);
     return this.get(url).then(retobj => {
-      if (retobj && retobj.openid) {
-        return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
-        // this.oauthAccessToken[retobj.openid] = retobj;
-      } else {
-        debug('not get openid!', retobj);
+      if (!(retobj && retobj.openid)) {
+        debug('warning! not get openid!', retobj);
       }
+      // // TODO: do we need save tokens?
+      // return this.backend.mset('oauthAccessTokens', retobj.openid, retobj);
       return retobj;
     });
   }
@@ -139,11 +133,8 @@ export default class Oauth extends Base {
       .replace(/ACCESS_TOKEN/g, oauthAccessToken)
       .replace(/OPENID/g, openid);
     return this.get(url).then(retobj => {
-      if (retobj && retobj.openid) {
-        return this.backend.mset('userInfos', retobj.openid, retobj);
-        // this.userInfo[retobj.openid] = retobj;
-      } else {
-        debug('not get userinfo!', retobj);
+      if (!(retobj && retobj.openid)) {
+        debug('warning! not get userinfo!', retobj);
       }
       return retobj;
     });
@@ -264,16 +255,15 @@ export default class Oauth extends Base {
    * @param {Object|String} options 授权获取到的code
    * @param {Function} callback 回调函数
    */
-  getUserByCode(code, scope) {
+  getUserByCode(code/*, scope1*/) {
     return this.getOauthAccessToken(code).then(retobj => {
-      if (retobj.openid) {
-        if (scope === 'snsapi_userinfo') {
-          return this.getUser(retobj);
-        } else {
-          return retobj;
-        }
+      if (!retobj) return retobj;
+      if (!retobj.openid) {
+        debug('warning! not get openid!', retobj);
+      }
+      if (retobj.scope === 'snsapi_userinfo') {
+        return this.getUser(retobj);
       } else {
-        debug('error! not get openid!', retobj);
         return retobj;
       }
     });

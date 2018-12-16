@@ -6,8 +6,6 @@ import crypto from 'crypto';
 export default class Jssdk extends Base {
   constructor(opts = {}) {
     super(opts);
-    // this.apiTickets = {
-    // };
   }
 
   async getSignPackage(url) {
@@ -53,13 +51,14 @@ export default class Jssdk extends Base {
     // var shaObj = new jsSHA(string, 'TEXT');
     // ret.signature = shaObj.getHash('SHA-1', 'HEX');
 
-    ret.appId = this.appId;
+    // ret.appId = this.appId;
+    ret.appId = this.getAppId();
     return ret;
   }
 
   async _getJsApiTicket() {
-    let cachedTicket = await this.backend.mget('apiTickets', this.appId);
-    // var cachedTicket = this.apiTickets[this.appId];
+    // let cachedTicket = await this.backend.mget('apiTickets', this.appId);
+    let cachedTicket = await this.readApiTicket();
     var currentTimestamp = parseInt(new Date().getTime() / 1000);
     var expireTime = (cachedTicket && cachedTicket.expire_time) || 0;
     if (expireTime < currentTimestamp) {
@@ -72,8 +71,8 @@ export default class Jssdk extends Base {
         var newTicket = {};
         newTicket.expire_time = currentTimestamp + 7200;
         newTicket.ticket = resJson.ticket;
-        // this.apiTickets[this.appId] = newTicket;
-        await this.backend.mset('apiTickets', this.appId, newTicket);
+        await this.saveApiTicket(newTicket);
+        // await this.backend.mset('apiTickets', this.appId, newTicket);
         cachedTicket = newTicket;
       } else {
         debug('error! getticket fail! url=' + url);
