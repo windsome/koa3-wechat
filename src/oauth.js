@@ -262,9 +262,12 @@ export default class Oauth extends Base {
         debug('warning! not get openid!', retobj);
       }
       if (retobj.scope === 'snsapi_userinfo') {
-        return this.getUser(retobj);
+        return this.getUser(retobj).then(retobj2 => {
+          if (!retobj2) return retobj2;
+          else return {...retobj2, scope: retobj.scope};
+        });
       } else {
-        return retobj;
+        return {...retobj, scope: retobj.scope};
       }
     });
   }

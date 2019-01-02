@@ -1,6 +1,6 @@
 {
   "name": "koa3-wechat",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "wechat api modified by windsome.feng",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "wechat",
     "wexin"
   ],
-  "author": "Jackson Tian",
+  "author": "windsome",
   "license": "MIT",
   "dependencies": {
     "ejs": "^2.5.6",
