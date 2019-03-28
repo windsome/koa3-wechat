@@ -32,6 +32,13 @@ npm install koa3-wechat
 ### 公众号消息自动回复，使用wechat.js.
 详见 [wechat.js用法](./doc/usage_wechat.md)
 
+## 依赖
+```
+npm i node-fetch
+# 使用redis缓存需安装该依赖
+npm i redis
+```
+
 ### 使用方法
 #### 微信支付使用方法
 ```
