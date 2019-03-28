@@ -1,3 +1,5 @@
+import 'isomorphic-fetch';
+
 export const requestOrigin = (url, opts = {}) => {
   console.log('request', url);
   return (
